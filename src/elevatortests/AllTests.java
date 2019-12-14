@@ -1,24 +1,11 @@
 package elevatortests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-class AllTests {
-
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
-
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
+@RunWith(Suite.class)
+@SuiteClasses({ ElevatorTest_2.class, TestElevator_1.class, ElevatorTest_3.class})
+public class AllTests {
 
 }

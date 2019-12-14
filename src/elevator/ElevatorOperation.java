@@ -1,5 +1,4 @@
 package elevator;
-
 /**
  * @author thuan pham
  */

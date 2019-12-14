@@ -8,7 +8,7 @@ package elevator;
  * the elevator are all "abstracted" out of the problem, encompassing 
  * all of these actions into a single "move()" operation.
  * 
- * @author Daniel Plante
+ * @author Thuan Pham
  *
  */
 public class Elevator implements ElevatorOperation
@@ -20,12 +20,13 @@ public class Elevator implements ElevatorOperation
 	// mynexdirection would be equal to the one that you are going up or down
 	private int myNextDirection;
 	// the order of the button - mySequence Number // Comment in class
-	private int mySequenceNumber;
+	private int mySequenceNumber = 0;
 	private int myPresentFloor;
-	
 	private int[] myUpButtonOuter;
 	private int[] myDownButtonOuter;
 	private boolean[] myInnerButtons;
+	private static int sequence_down = 0;
+	private static int sequence_up = 0;
 	
 	/**
 	 * Default constructor setting the number of floors for
@@ -47,6 +48,8 @@ public class Elevator implements ElevatorOperation
 		myUpButtonOuter = new int[10];
 		myDownButtonOuter = new int[10];
 		myInnerButtons = new boolean[10];
+		myPresentFloor = 1;
+		myDirection = NOT_SET;
 	}
 	
 
@@ -59,11 +62,12 @@ public class Elevator implements ElevatorOperation
 	 * @return true if the button was pushed, false if not
 	 */
 	public boolean pushUp(int floor) {
-		if ((floor > myNumberOfFloors) || (floor < myNumberOfFloors)) {
+		if ((floor > myNumberOfFloors) || (floor < 1)) {
 			return false;
-		}else if (floor == 5) {
+		} if (floor == 5) {
 			return false;
 		}
+		myUpButtonOuter[sequence_up] = floor;
 		return true;
 	}
 	
@@ -79,11 +83,12 @@ public class Elevator implements ElevatorOperation
 	 */
 	public boolean pushDown(int floor)
 	{
-		if ((floor > myNumberOfFloors) || (floor < myNumberOfFloors)) {
+		if ((floor > myNumberOfFloors) || (floor < 1)) {
 			return false;
-		}else if (floor == 1) {
+		} if (floor == 1) {
 			return false;
 		}
+		myDownButtonOuter[sequence_down] = floor;
 		return true;
 	}
 	
@@ -92,7 +97,19 @@ public class Elevator implements ElevatorOperation
 	 */
 	public boolean pushIn(int floor)
 	{
-		return true;
+		if (myPresentFloor == floor) {
+			myInnerButtons[floor] = false;
+			mySequenceNumber += 1;
+			return false;
+		} 
+		if ((myDirection == DOWN) && (myPresentFloor < floor)) {
+			return false;
+		} else if ((myDirection == UP) && (myPresentFloor > floor)) {
+			return false;
+		} else {
+			myInnerButtons[floor] = true;
+		}
+		return false;
 	}
 	
 	/**
@@ -102,7 +119,18 @@ public class Elevator implements ElevatorOperation
 	 */
 	public int move()
 	{		
-		return 0;
+		if ((myUpButtonOuter[0] != 0) && (myDirection == NOT_SET)) {
+			myDirection = UP;
+			myPresentFloor = myUpButtonOuter[0];
+		} else if ((myDownButtonOuter[0] != 0) && (myDirection == NOT_SET)) {
+			myDirection = DOWN;
+			myPresentFloor = myDownButtonOuter[0];
+		} 
+		if (myDirection == UP) {
+			myNextDirection += 1;
+		}
+		
+		return myPresentFloor;
 	}
 	
 	/**
