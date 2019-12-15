@@ -25,9 +25,7 @@ public class Elevator implements ElevatorOperation
 	private int[] myUpButtonOuter;
 	private int[] myDownButtonOuter;
 	private boolean[] myInnerButtons;
-	private static int sequence_down = 0;
-	private static int sequence_up = 0;
-	
+
 	/**
 	 * Default constructor setting the number of floors for
 	 * the elevator to five (5)
@@ -36,7 +34,7 @@ public class Elevator implements ElevatorOperation
 	{
 		this(5);
 	}
-	
+
 	/**
 	 * Constructor setting the number of floors
 	 * 
@@ -51,7 +49,7 @@ public class Elevator implements ElevatorOperation
 		myPresentFloor = 1;
 		myDirection = NOT_SET;
 	}
-	
+
 
 	/**
 	 * Try to push the "up" button on a floor, and fail gracefully if
@@ -67,10 +65,11 @@ public class Elevator implements ElevatorOperation
 		} if (floor == 5) {
 			return false;
 		}
-		myUpButtonOuter[sequence_up] = floor;
+		myUpButtonOuter[mySequenceNumber] = floor;
+		mySequenceNumber += 1;
 		return true;
 	}
-	
+
 	/**
 	 * Try to push the "down" button on a floor, and fail gracefully if
 	 * not a valid choice or already pushed.
@@ -87,16 +86,18 @@ public class Elevator implements ElevatorOperation
 			return false;
 		} if (floor == 1) {
 			return false;
-		}
-		myDownButtonOuter[sequence_down] = floor;
+		}  
+		myDownButtonOuter[mySequenceNumber] = floor;
+		mySequenceNumber += 1;
 		return true;
 	}
-	
+
 	/**
 	 * If a valid thing to do, push a button inside the elevator
 	 */
 	public boolean pushIn(int floor)
 	{
+
 		if (myPresentFloor == floor) {
 			myInnerButtons[floor] = false;
 			mySequenceNumber += 1;
@@ -108,10 +109,11 @@ public class Elevator implements ElevatorOperation
 			return false;
 		} else {
 			myInnerButtons[floor] = true;
+
 		}
-		return false;
+		return true;
 	}
-	
+
 	/**
 	 * Try to actually move the elevator based on all present settings.  
 	 * 
@@ -119,20 +121,56 @@ public class Elevator implements ElevatorOperation
 	 */
 	public int move()
 	{		
+		int tempFloor = myPresentFloor;
 		if ((myUpButtonOuter[0] != 0) && (myDirection == NOT_SET)) {
 			myDirection = UP;
 			myPresentFloor = myUpButtonOuter[0];
+			return myPresentFloor;
 		} else if ((myDownButtonOuter[0] != 0) && (myDirection == NOT_SET)) {
 			myDirection = DOWN;
 			myPresentFloor = myDownButtonOuter[0];
-		} 
-		if (myDirection == UP) {
-			myNextDirection += 1;
+			return myPresentFloor;
 		}
-		
+		if (myDirection == DOWN) {
+			tempFloor--;
+			for (int i = tempFloor; i >0 ; i--) {
+				for (int j = 1; j < myDownButtonOuter.length; j++) {
+					if (i == myDownButtonOuter[j]) {
+						myPresentFloor = i;
+						myDownButtonOuter[j] = 0;
+						return myPresentFloor;
+					} else if (myInnerButtons[i] == true) {
+						myPresentFloor = i;
+						myInnerButtons[i] = false;
+						return myPresentFloor;
+					}
+				}
+			}
+		} else if (myDirection == UP) {
+			tempFloor++;
+			for (int i = tempFloor; i < 6; i++) {
+				for (int j = 1; j < myUpButtonOuter.length; j ++) {
+					if (i == myUpButtonOuter[j]){
+						myPresentFloor = i;
+						myUpButtonOuter[j] = 0;
+						if (myPresentFloor == 5) {
+							myDirection = DOWN;
+							}
+						return myPresentFloor;
+					}else if(myInnerButtons[i] == true) {
+						myPresentFloor = i;
+						myInnerButtons[i] = false;
+						if (myPresentFloor == 5) {
+							myDirection = DOWN;
+							}
+						return myPresentFloor;
+					}
+				}
+			}
+		}
 		return myPresentFloor;
 	}
-	
+
 	/**
 	 * Accessor returning the current floor
 	 * When move, checking if anybody's there in each floor then stop to pick up that person then check again what 
@@ -143,7 +181,7 @@ public class Elevator implements ElevatorOperation
 	{
 		return myPresentFloor;
 	}
-	
+
 	/**
 	 * Accessor returning the current direction
 	 * 
@@ -151,6 +189,21 @@ public class Elevator implements ElevatorOperation
 	 */
 	public int getDirection()
 	{
+		int count = 0;
+		int i = 0;
+		while (i < 10) {
+			if (myInnerButtons[i] == false && myUpButtonOuter[i] == 0 && myDownButtonOuter[i] == 0) {
+				count += 1;
+			}
+			i++;
+		}
+		if (count == 9) {
+			myUpButtonOuter[0] = 0;
+			myDownButtonOuter[0] = 0;
+			return myDirection;
+		} else if (count == 10) {
+			myDirection = NOT_SET;
+		}
 		return myDirection;
 	}
 }
