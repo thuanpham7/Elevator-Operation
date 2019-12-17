@@ -64,7 +64,7 @@ public class Elevator implements ElevatorOperation
 			return false;
 		} if (floor == 5) {
 			return false;
-		}
+		} 
 		myUpButtonOuter[mySequenceNumber] = floor;
 		mySequenceNumber += 1;
 		return true;
@@ -80,13 +80,15 @@ public class Elevator implements ElevatorOperation
 	 * false if you are at 5th floor - comment in class
 	 * check if it is a valid floor - comment in class
 	 */
-	public boolean pushDown(int floor)
-	{
+	public boolean pushDown(int floor) {
 		if ((floor > myNumberOfFloors) || (floor < 1)) {
 			return false;
 		} if (floor == 1) {
 			return false;
-		}  
+		}
+		if (myPresentFloor == floor) {
+			return false;
+		}
 		myDownButtonOuter[mySequenceNumber] = floor;
 		mySequenceNumber += 1;
 		return true;
@@ -130,42 +132,114 @@ public class Elevator implements ElevatorOperation
 			myDirection = DOWN;
 			myPresentFloor = myDownButtonOuter[0];
 			return myPresentFloor;
-		}
+		} 
 		if (myDirection == DOWN) {
+			int another_1= 1;
 			tempFloor--;
+			int count_2= 1;
+			int count_3= 1;
+			for (int k = 1; k < myUpButtonOuter.length; k ++) {
+				if (myDownButtonOuter[k] == 0 && myInnerButtons[k] == false) {
+					another_1++;
+				}
+			}
+			if (another_1 == 10) {
+				for (int i = 1; i < myUpButtonOuter.length; i++) {
+					if (myUpButtonOuter[i] != 0) {
+						myPresentFloor = myUpButtonOuter[i];
+						myDirection = UP;
+						myUpButtonOuter[i] = 0;
+						return myPresentFloor;
+					}
+				}
+			}
 			for (int i = tempFloor; i >0 ; i--) {
 				for (int j = 1; j < myDownButtonOuter.length; j++) {
 					if (i == myDownButtonOuter[j]) {
 						myPresentFloor = i;
 						myDownButtonOuter[j] = 0;
+						for (int k = 0; k< myDownButtonOuter.length; k++) {
+							if (myDownButtonOuter[k] == 0 && myInnerButtons[k] == false) {
+								count_2++;
+							}
+						}
+						if (count_2 == 10) {
+							myDirection = UP;
+						}
 						return myPresentFloor;
 					} else if (myInnerButtons[i] == true) {
 						myPresentFloor = i;
 						myInnerButtons[i] = false;
+						for (int k = 0; k< myDownButtonOuter.length; k++) {
+							if (myDownButtonOuter[k] == 0 && myInnerButtons[k] == false) {
+								count_3++;
+							}
+						}
+						if (count_3 == 10) {
+							myDirection = UP;
+						}
 						return myPresentFloor;
 					}
 				}
 			}
+			
 		} else if (myDirection == UP) {
 			tempFloor++;
+			int another = 1;
+			int count = 1; 
+			int count_1 = 1;
+			for (int k = 1; k < myUpButtonOuter.length; k ++) {
+				if (myUpButtonOuter[k] == 0 && myInnerButtons[k] == false) {
+					another++;
+				}
+			}
+			if (another == 10) {
+				for (int i = 1; i < myUpButtonOuter.length; i++) {
+					if (myDownButtonOuter[i] != 0) {
+						myPresentFloor = myDownButtonOuter[i];
+						myDirection = DOWN;
+						myDownButtonOuter[i] = 0;
+						return myPresentFloor;
+					}
+				}
+			}
 			for (int i = tempFloor; i < 6; i++) {
 				for (int j = 1; j < myUpButtonOuter.length; j ++) {
 					if (i == myUpButtonOuter[j]){
 						myPresentFloor = i;
 						myUpButtonOuter[j] = 0;
-						if (myPresentFloor == 5) {
-							myDirection = DOWN;
+						for (int k = 1; k < myUpButtonOuter.length; k ++) {
+							if (myUpButtonOuter[k] == 0 && myInnerButtons[k] == false) {
+								count++;
 							}
+						}
+						if (count == 10 || myPresentFloor == 5) {
+							myDirection = DOWN;
+						}
 						return myPresentFloor;
 					}else if(myInnerButtons[i] == true) {
 						myPresentFloor = i;
 						myInnerButtons[i] = false;
-						if (myPresentFloor == 5) {
-							myDirection = DOWN;
+						for (int k = 1; k < myUpButtonOuter.length; k ++) {
+							if (myUpButtonOuter[k] == 0 && myInnerButtons[k] == false) {
+								count_1++;
 							}
+						}
+						if (count_1 == 10 || myPresentFloor == 5) {
+							myDirection = DOWN;
+						}
 						return myPresentFloor;
+					} else if (i == 5) {
+						for (int k = 1; k < myUpButtonOuter.length; k++) {
+							if (myUpButtonOuter[k] != 0) {
+								myPresentFloor = myUpButtonOuter[k];
+								myUpButtonOuter[k] = 0;
+								return myPresentFloor;
+							}
+						}
 					}
 				}
+				
 			}
 		}
 		return myPresentFloor;

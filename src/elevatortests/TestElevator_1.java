@@ -280,13 +280,12 @@ public class TestElevator_1 {
 		int validInt;
 		
 		myElevator.pushDown(5);
+		myElevator.pushIn(2);
+		myElevator.move();
 		validBool = myElevator.pushDown(5); // false
 		assertFalse("Can't push the same level they are on", validBool);
 		myElevator.pushUp(3);
-		myElevator.pushUp(1);
-		validInt = myElevator.move(); // < 5
-		assertEquals("Should move towards 5", 5, validInt);	
-		myElevator.pushIn(2); 
+		myElevator.pushUp(1); 
 		validBool = myElevator.pushIn(3);
 		assertTrue("Should be able to push second button that also goes same direction", validBool);
 		validInt = myElevator.move(); // < 3

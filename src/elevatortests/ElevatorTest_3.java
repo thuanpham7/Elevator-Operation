@@ -87,8 +87,9 @@ public class ElevatorTest_3
 		assertFalse("Elevator should only go down from here", myElevator.pushIn(3));
 		assertEquals("Move should place elevator on second floor", myElevator.move(), 2);
 		assertTrue(myElevator.pushIn(1));
-		assertEquals("Move should place elevator on third floor", myElevator.move(), 1);
+		assertEquals("Move should place elevator on first floor", myElevator.move(), 1);
 		assertTrue(myElevator.pushDown(3));
+		assertEquals("Should move to the third floor", myElevator.move(),3);
 		assertFalse("Already pushed down button on third floor", myElevator.pushDown(3));
 		assertTrue(myElevator.pushUp(3));
 		assertEquals("Move should place elevator on third floor", myElevator.move(), 3);
