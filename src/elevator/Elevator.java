@@ -133,21 +133,50 @@ public class Elevator implements ElevatorOperation
 			myPresentFloor = myDownButtonOuter[0];
 			return myPresentFloor;
 		} 
+		
 		if (myDirection == DOWN) {
+			if (myPresentFloor == 1) {
+				for (int i = 2; i < 6; i++) {
+					for (int j = 1; j < myUpButtonOuter.length; j++) {
+						if (i == myUpButtonOuter[j]) {
+							myPresentFloor = i;
+							myDirection = UP;
+							myUpButtonOuter[j] = 0;
+							return myPresentFloor;
+						} else if (i == myDownButtonOuter[j]) {
+							myPresentFloor = i;
+							myDownButtonOuter[j] = 0;
+							myDirection = DOWN;
+							return myPresentFloor;
+						}
+					}
+				}
+			}
 			int another_1= 1;
+			int another_2 = 1;
 			tempFloor--;
+			if (tempFloor == 0) {
+				tempFloor = 1;
+			}
 			int count_2= 1;
 			int count_3= 1;
 			for (int k = 1; k < myUpButtonOuter.length; k ++) {
 				if (myDownButtonOuter[k] == 0 && myInnerButtons[k] == false) {
 					another_1++;
+				} if (myUpButtonOuter[k] == 0) {
+					another_2++;
 				}
 			}
+			
 			if (another_1 == 10) {
 				for (int i = 1; i < myUpButtonOuter.length; i++) {
 					if (myUpButtonOuter[i] != 0) {
 						myPresentFloor = myUpButtonOuter[i];
-						myDirection = UP;
+						if (another_2 == 10) {
+							myDirection = DOWN;
+						} else {
+							myDirection = UP;
+						}
 						myUpButtonOuter[i] = 0;
 						return myPresentFloor;
 					}
@@ -163,7 +192,7 @@ public class Elevator implements ElevatorOperation
 								count_2++;
 							}
 						}
-						if (count_2 == 10) {
+						if (((count_2 == 10) || (myPresentFloor == 1)) && (another_2 < 10)) {
 							myDirection = UP;
 						}
 						return myPresentFloor;
@@ -175,9 +204,13 @@ public class Elevator implements ElevatorOperation
 								count_3++;
 							}
 						}
-						if (count_3 == 10) {
+						if ((count_3 == 10)) {
 							myDirection = UP;
 						}
+						return myPresentFloor;
+					} else if (myDownButtonOuter[j] > tempFloor) {
+						myPresentFloor = myDownButtonOuter[j];
+						myDownButtonOuter[j] = 0;
 						return myPresentFloor;
 					}
 				}
@@ -191,6 +224,8 @@ public class Elevator implements ElevatorOperation
 			for (int k = 1; k < myUpButtonOuter.length; k ++) {
 				if (myUpButtonOuter[k] == 0 && myInnerButtons[k] == false) {
 					another++;
+				} else if (myUpButtonOuter[k] == myPresentFloor) {
+					myUpButtonOuter[k] = 0;
 				}
 			}
 			if (another == 10) {
