@@ -160,15 +160,18 @@ public class Elevator implements ElevatorOperation
 			}
 			int count_2= 1;
 			int count_3= 1;
+			int count_4 = 1;
 			for (int k = 1; k < myUpButtonOuter.length; k ++) {
-				if (myDownButtonOuter[k] == 0 && myInnerButtons[k] == false) {
+				if (myDownButtonOuter[k] == 0) {
 					another_1++;
 				} if (myUpButtonOuter[k] == 0) {
 					another_2++;
+				} if (myInnerButtons[k] == false) {
+					count_4++;
 				}
 			}
 			
-			if (another_1 == 10) {
+			if ((another_1 == 10) && (count_4 == 10)) {
 				for (int i = 1; i < myUpButtonOuter.length; i++) {
 					if (myUpButtonOuter[i] != 0) {
 						myPresentFloor = myUpButtonOuter[i];
@@ -198,6 +201,13 @@ public class Elevator implements ElevatorOperation
 						return myPresentFloor;
 					} else if (myInnerButtons[i] == true) {
 						myPresentFloor = i;
+						for (int k =1; k < myDownButtonOuter.length;k++) {
+							if (myPresentFloor == myDownButtonOuter[k]) {
+								myDownButtonOuter[k] = 0;
+								myInnerButtons[i] = false;
+								return myPresentFloor;
+							}
+						}
 						myInnerButtons[i] = false;
 						for (int k = 0; k< myDownButtonOuter.length; k++) {
 							if (myDownButtonOuter[k] == 0 && myInnerButtons[k] == false) {
@@ -208,7 +218,7 @@ public class Elevator implements ElevatorOperation
 							myDirection = UP;
 						}
 						return myPresentFloor;
-					} else if (myDownButtonOuter[j] > tempFloor) {
+					} else if ((myDownButtonOuter[j] > tempFloor) && (count_4 ==10)) {
 						myPresentFloor = myDownButtonOuter[j];
 						myDownButtonOuter[j] = 0;
 						return myPresentFloor;
@@ -238,6 +248,7 @@ public class Elevator implements ElevatorOperation
 					}
 				}
 			}
+			int m = 1;
 			for (int i = tempFloor; i < 6; i++) {
 				for (int j = 1; j < myUpButtonOuter.length; j ++) {
 					if (i == myUpButtonOuter[j]){
@@ -246,9 +257,11 @@ public class Elevator implements ElevatorOperation
 						for (int k = 1; k < myUpButtonOuter.length; k ++) {
 							if (myUpButtonOuter[k] == 0 && myInnerButtons[k] == false) {
 								count++;
+							} if (myDownButtonOuter[k] == 0) {
+								m++;
 							}
 						}
-						if (count == 10 || myPresentFloor == 5) {
+						if ((count == 10 || myPresentFloor == 5) && (m < 10)) {
 							myDirection = DOWN;
 						}
 						return myPresentFloor;
