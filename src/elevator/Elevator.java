@@ -1,16 +1,10 @@
 package elevator;
 
-/**
- * Elevator class to simulate the operation of an elevator.  Details
- * associated with opening and closing of the elevator doors, entry and
- * exit of people to and from the elevator, the number of people in, 
- * entering or leaving the elevator, and the timing of the movement of
- * the elevator are all "abstracted" out of the problem, encompassing 
- * all of these actions into a single "move()" operation.
- * 
- * @author Thuan Pham
- *
- */
+
+ /**
+  * @author ThuanPham
+  */
+
 public class Elevator implements ElevatorOperation
 {
 	public static final int NO_VALUE = -1;
