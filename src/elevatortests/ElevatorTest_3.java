@@ -17,7 +17,7 @@ import org.junit.Test;
 public class ElevatorTest_3 
 {
 	private Elevator myElevator;
-	
+	 
 	/**
 	 * An elevator with 5 floors will be set up new before running 
 	 * each test

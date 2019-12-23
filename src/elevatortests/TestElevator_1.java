@@ -20,7 +20,7 @@ public class TestElevator_1 {
 	/*
 	 * Tests to make sure it will pickup people that are only on there way down
 	 */
-	
+	 
 	@Test
 	public void testOnlyDown ()
 	{

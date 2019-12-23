@@ -21,7 +21,7 @@ public class ElevatorTest_2 {
 	public void setUp() throws Exception {
 		myElevator = new Elevator();
 	}
-
+ 
 	/**
 	 * Test moving from floor 2, pickup on floor 3 but not 
 	 * the passenger pushing down on floor 
