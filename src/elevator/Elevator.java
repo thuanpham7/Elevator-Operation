@@ -39,7 +39,7 @@ public class Elevator implements ElevatorOperation
 		myDownButtonOuter = new int[10];
 		myInnerButtons = new boolean[10];
 		myPresentFloor = 1;
-		myDirection = NOT_SET;
+//		myDirection = NOT_SET;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class Elevator implements ElevatorOperation
 		 */
 		myUpButtonOuter[mySequenceNumber] = floor;
 		mySequenceNumber += 1;
-		return true;
+		return false; 
 	}
 
 	/**
